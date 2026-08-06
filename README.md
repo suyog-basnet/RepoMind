@@ -1,9 +1,9 @@
 <div align="center">
 
-<h1 align="center">ReadMeAI</h1>
+<h1 align="center">RepoMind</h1>
 <p align="center"><em>AI-powered README generator for developers.</em></p>
 
-![Last Commit](https://img.shields.io/github/last-commit/suyog-basnet/ReadMeAI?style=for-the-badge&color=a6e3a1) ![Issues](https://img.shields.io/github/issues/suyog-basnet/ReadMeAI?style=for-the-badge&color=f38ba8) ![Stars](https://img.shields.io/github/stars/suyog-basnet/ReadMeAI?style=for-the-badge&color=f9e2af) ![Forks](https://img.shields.io/github/forks/suyog-basnet/ReadMeAI?style=for-the-badge&color=89b4fa) ![License](https://img.shields.io/badge/license-MIT-89b4fa?style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/suyog-basnet/RepoMind?style=for-the-badge&color=a6e3a1) ![Issues](https://img.shields.io/github/issues/suyog-basnet/RepoMind?style=for-the-badge&color=f38ba8) ![Stars](https://img.shields.io/github/stars/suyog-basnet/RepoMind?style=for-the-badge&color=f9e2af) ![Forks](https://img.shields.io/github/forks/suyog-basnet/RepoMind?style=for-the-badge&color=89b4fa) ![License](https://img.shields.io/badge/license-MIT-89b4fa?style=for-the-badge)
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
@@ -27,7 +27,7 @@
 
 ## About
 
-ReadMeAI uses AI to create professional README files based on your project's tech stack and structure. It includes live previews, quality scoring, and customizable templates. Built with React and Vite for a fast, modern interface.
+RepoMind uses AI to create professional README files based on your project's tech stack and structure. It includes live previews, quality scoring, and customizable templates. Built with React and Vite for a fast, modern interface.
 
 ---
 
@@ -54,8 +54,8 @@ ReadMeAI uses AI to create professional README files based on your project's tec
 ## Installation
 
 ```bash
-git clone https://github.com/suyog-basnet/ReadMeAI.git
-cd readme-ai-studio
+git clone https://github.com/suyog-basnet/RepoMind.git
+cd RepoMind
 npm install
 npm run dev
 ```
