@@ -5,7 +5,7 @@
 
 ![Last Commit](https://img.shields.io/github/last-commit/suyog-basnet/RepoMind?style=for-the-badge&color=a6e3a1) ![Issues](https://img.shields.io/github/issues/suyog-basnet/RepoMind?style=for-the-badge&color=f38ba8) ![Stars](https://img.shields.io/github/stars/suyog-basnet/RepoMind?style=for-the-badge&color=f9e2af) ![Forks](https://img.shields.io/github/forks/suyog-basnet/RepoMind?style=for-the-badge&color=89b4fa) ![License](https://img.shields.io/badge/license-MIT-89b4fa?style=for-the-badge)
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
 </div>
 
