@@ -1,0 +1,77 @@
+// Each theme is a set of generation flags consumed by generateMarkdown.js.
+// Themes change structure and formatting choices, not the underlying
+// content the user entered.
+export const THEMES = [
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    description: 'Just the essentials. No emoji, no dividers, badges kept small.',
+    emojiHeadings: false,
+    centeredHeader: false,
+    badgeStyle: 'flat',
+    dividers: false,
+  },
+  {
+    id: 'modern',
+    name: 'Modern',
+    description: 'Centered header, for-the-badge badges, section dividers.',
+    emojiHeadings: false,
+    centeredHeader: true,
+    badgeStyle: 'for-the-badge',
+    dividers: true,
+  },
+  {
+    id: 'corporate',
+    name: 'Corporate',
+    description: 'Clean and formal — no emoji, flat badges, clear structure.',
+    emojiHeadings: false,
+    centeredHeader: false,
+    badgeStyle: 'flat-square',
+    dividers: true,
+  },
+  {
+    id: 'developer',
+    name: 'Developer',
+    description: 'Terminal-flavored headings and monospace-first formatting.',
+    emojiHeadings: false,
+    centeredHeader: false,
+    badgeStyle: 'flat-square',
+    dividers: false,
+    terminalHeadings: true,
+  },
+  {
+    id: 'animated',
+    name: 'Animated',
+    description: 'Centered header with a typing-effect SVG banner and emoji headings.',
+    emojiHeadings: true,
+    centeredHeader: true,
+    badgeStyle: 'for-the-badge',
+    dividers: true,
+    typingHeader: true,
+  },
+  {
+    id: 'open-source',
+    name: 'Open Source',
+    description: 'Emoji headings, social badges, contributor-friendly framing.',
+    emojiHeadings: true,
+    centeredHeader: true,
+    badgeStyle: 'social',
+    dividers: true,
+  },
+];
+
+export const SECTION_EMOJI = {
+  about: '📖',
+  screenshots: '🖼️',
+  features: '✨',
+  techstack: '🛠️',
+  installation: '⚙️',
+  usage: '🚀',
+  folderstructure: '📁',
+  architecture: '🧩',
+  contributing: '🤝',
+  license: '📄',
+  author: '👤',
+  roadmap: '🗺️',
+  toc: '📑',
+};
