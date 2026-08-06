@@ -1,9 +1,11 @@
 <div align="center">
 
 <h1 align="center">ReadMeAI</h1>
-<p align="center"><em>An AI-powered tool that writes READMEs from your repository structure.</em></p>
+<p align="center"><em>AI-powered README generator for developers.</em></p>
 
 ![Last Commit](https://img.shields.io/github/last-commit/suyog-basnet/ReadMeAI?style=for-the-badge&color=a6e3a1) ![Issues](https://img.shields.io/github/issues/suyog-basnet/ReadMeAI?style=for-the-badge&color=f38ba8) ![Stars](https://img.shields.io/github/stars/suyog-basnet/ReadMeAI?style=for-the-badge&color=f9e2af) ![Forks](https://img.shields.io/github/forks/suyog-basnet/ReadMeAI?style=for-the-badge&color=89b4fa) ![License](https://img.shields.io/badge/license-MIT-89b4fa?style=for-the-badge)
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
 </div>
 
@@ -13,7 +15,9 @@
 
 - [About](#about)
 - [Features](#features)
+- [Tech Stack](#tech-stack)
 - [Installation](#installation)
+- [Usage](#usage)
 - [Folder Structure](#folder-structure)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -23,20 +27,27 @@
 
 ## About
 
-ReadMeAI analyzes your project files and generates comprehensive README documentation tailored to your tech stack and folder layout. It supports various languages and frameworks, focusing on clarity and practical use for developers. The tool integrates with GitHub Actions for automated documentation on push events.
+ReadMeAI uses AI to create professional README files based on your project's tech stack and structure. It includes live previews, quality scoring, and customizable templates. Built with React and Vite for a fast, modern interface.
 
 ---
 
 ## Features
 
-- Scans repository structure and key files to infer project type
-- Generates README.md with sections for installation, usage, and API docs
-- Supports customization via configuration files or CLI flags
-- Integrates with CI/CD pipelines like GitHub Actions for automation
-- Handles multiple license types, pulling content from LICENSE files
-- Outputs clean, markdown-formatted text with placeholders for manual edits
-- Works with public and private repositories via API tokens
-- Includes error handling for missing or malformed project files
+- AI-driven README generation with tech stack context from src/data/ files
+- Live preview pane showing generated markdown updates in real-time
+- Quality scoring system evaluating README completeness from src/lib/qualityScore.js
+- GitHub repository import functionality via src/lib/githubImport.js
+- Customizable themes and templates managed in src/data/themes.js and templates.js
+- Mermaid diagram support through src/components/MermaidBlock.jsx
+- Modular component architecture with dedicated panels for AI, forms, and previews
+
+---
+
+## Tech Stack
+
+- React
+- Vite
+- Node.js
 
 ---
 
@@ -44,7 +55,17 @@ ReadMeAI analyzes your project files and generates comprehensive README document
 
 ```bash
 git clone https://github.com/suyog-basnet/ReadMeAI.git
-cd ReadMeAI
+cd readme-ai-studio
+npm install
+npm run dev
+```
+
+---
+
+## Usage
+
+```bash
+npm run dev
 ```
 
 ---
@@ -52,25 +73,58 @@ cd ReadMeAI
 ## Folder Structure
 
 ```
+.gitignore/
 LICENSE/
 README.md/
+index.html/
+package-lock.json/
+package.json/
+public/
+  └── favicon.svg/
+  └── icons.svg/
+src/
+  └── App.jsx/
+  └── components/
+    └── AiPanel.jsx/
+    └── FormPanel.jsx/
+    └── Home.jsx/
+    └── MermaidBlock.jsx/
+    └── PreviewPane.jsx/
+    └── QualityScore.jsx/
+    └── TopBar.jsx/
+  └── data/
+    └── badgeOptions.js/
+    └── techStackMap.js/
+    └── templates.js/
+    └── themes.js/
+  └── lib/
+    └── aiClient.js/
+    └── githubImport.js/
+    └── qualityScore.js/
+    └── zipImport.js/
+  └── main.jsx/
+  └── styles/
+    └── app.css/
+  └── utils/
+    └── generateMarkdown.js/
+vite.config.js/
 ```
 
 ---
 
 ## Roadmap
 
-- [ ] Add support for generating documentation in formats like reStructuredText
-- [ ] Implement a web interface for manual review and editing of generated READMEs
-- [ ] Expand language detection to auto-suggest code examples
-- [ ] Integrate with more CI platforms beyond GitHub Actions
-- [ ] Develop a plugin system for custom template engines
+- [ ] Add support for additional documentation formats like CHANGELOG.md
+- [ ] Implement user authentication to save and manage generated READMEs
+- [ ] Expand AI model options beyond the current src/lib/aiClient.js configuration
+- [ ] Integrate real-time collaboration features for team projects
+- [ ] Add export options for direct publishing to GitHub repositories
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please open an issue first to discuss major changes or new features. Submit pull requests with clear descriptions and tests.
+We welcome pull requests for bug fixes, feature additions, and improvements. For major changes, please open an issue first to discuss your ideas. Follow the existing code structure in src/components/, src/lib/, and src/data/.
 
 ---
 
