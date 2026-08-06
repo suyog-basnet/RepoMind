@@ -69,44 +69,43 @@ npm run dev
 ## Folder Structure
 
 ```
-RepoMind/
-  └── .gitignore/
-  └── LICENSE/
-  └── README.md/
-  └── index.html/
-  └── package-lock.json/
-  └── package.json/
-  └── public/
-    └── favicon.svg/
-    └── icons.svg/
-  └── src/
-    └── App.jsx/
-    └── components/
-    └── data/
-    └── lib/
-    └── main.jsx/
-    └── styles/
-    └── utils/
-  └── vite.config.js/
-__MACOSX/
-  └── ._RepoMind/
-  └── RepoMind/
-    └── ._.git/
-    └── ._.gitignore/
-    └── ._LICENSE/
-    └── ._README.md/
-    └── ._index.html/
-    └── ._node_modules/
-    └── ._package-lock.json/
-    └── ._package.json/
-    └── ._public/
-    └── ._src/
-    └── ._vite.config.js/
-    └── public/
-    └── src/
+.gitignore/
+LICENSE/
+README.md/
+index.html/
+package-lock.json/
+package.json/
+public/
+  └── favicon.svg/
+  └── icons.svg/
+src/
+  └── App.jsx/
+  └── components/
+    └── AiPanel.jsx/
+    └── FormPanel.jsx/
+    └── Home.jsx/
+    └── MermaidBlock.jsx/
+    └── PreviewPane.jsx/
+    └── QualityScore.jsx/
+    └── TopBar.jsx/
+  └── data/
+    └── badgeOptions.js/
+    └── techStackMap.js/
+    └── templates.js/
+    └── themes.js/
+  └── lib/
+    └── aiClient.js/
+    └── githubImport.js/
+    └── qualityScore.js/
+    └── zipImport.js/
+  └── main.jsx/
+  └── styles/
+    └── app.css/
+  └── utils/
+    └── generateMarkdown.js/
+vite.config.js/
 ```
 
----
 
 ## Roadmap
 
