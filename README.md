@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1 align="center">RepoMind</h1>
-<p align="center"><em>AI-powered README generator for developers.</em></p>
+<p align="center"><em>Generate polished README files directly from your React and Vite project structure.</em></p>
 
 ![Last Commit](https://img.shields.io/github/last-commit/suyog-basnet/RepoMind?style=for-the-badge&color=a6e3a1) ![Issues](https://img.shields.io/github/issues/suyog-basnet/RepoMind?style=for-the-badge&color=f38ba8) ![Stars](https://img.shields.io/github/stars/suyog-basnet/RepoMind?style=for-the-badge&color=f9e2af) ![Forks](https://img.shields.io/github/forks/suyog-basnet/RepoMind?style=for-the-badge&color=89b4fa) ![License](https://img.shields.io/badge/license-MIT-89b4fa?style=for-the-badge)
 
@@ -27,19 +27,17 @@
 
 ## About
 
-RepoMind uses AI to create professional README files based on your project's tech stack and structure. It includes live previews, quality scoring, and customizable templates. Built with React and Vite for a fast, modern interface.
+RepoMind analyzes your React project's folder structure and source files to automatically create well-structured README documentation. It leverages context from your components, utils, and styles directories to produce accurate and helpful project overviews. Built with React and Vite for a fast, modern development experience.
 
 ---
 
 ## Features
 
-- AI-driven README generation with tech stack context from src/data/ files
-- Live preview pane showing generated markdown updates in real-time
-- Quality scoring system evaluating README completeness from src/lib/qualityScore.js
-- GitHub repository import functionality via src/lib/githubImport.js
-- Customizable themes and templates managed in src/data/themes.js and templates.js
-- Mermaid diagram support through src/components/MermaidBlock.jsx
-- Modular component architecture with dedicated panels for AI, forms, and previews
+- Analyzes React project structure from src/ directory and subfolders
+- Extracts context from component, utility, and style modules
+- Generates README sections based on Vite configuration and package.json
+- Provides a clean UI built with React for editing generated content
+- Outputs formatted Markdown files ready for GitHub
 
 ---
 
@@ -54,8 +52,6 @@ RepoMind uses AI to create professional README files based on your project's tec
 ## Installation
 
 ```bash
-git clone https://github.com/suyog-basnet/RepoMind.git
-cd RepoMind
 npm install
 npm run dev
 ```
@@ -73,58 +69,56 @@ npm run dev
 ## Folder Structure
 
 ```
-.gitignore/
-LICENSE/
-README.md/
-index.html/
-package-lock.json/
-package.json/
-public/
-  └── favicon.svg/
-  └── icons.svg/
-src/
-  └── App.jsx/
-  └── components/
-    └── AiPanel.jsx/
-    └── FormPanel.jsx/
-    └── Home.jsx/
-    └── MermaidBlock.jsx/
-    └── PreviewPane.jsx/
-    └── QualityScore.jsx/
-    └── TopBar.jsx/
-  └── data/
-    └── badgeOptions.js/
-    └── techStackMap.js/
-    └── templates.js/
-    └── themes.js/
-  └── lib/
-    └── aiClient.js/
-    └── githubImport.js/
-    └── qualityScore.js/
-    └── zipImport.js/
-  └── main.jsx/
-  └── styles/
-    └── app.css/
-  └── utils/
-    └── generateMarkdown.js/
-vite.config.js/
+RepoMind/
+  └── .gitignore/
+  └── LICENSE/
+  └── README.md/
+  └── index.html/
+  └── package-lock.json/
+  └── package.json/
+  └── public/
+    └── favicon.svg/
+    └── icons.svg/
+  └── src/
+    └── App.jsx/
+    └── components/
+    └── data/
+    └── lib/
+    └── main.jsx/
+    └── styles/
+    └── utils/
+  └── vite.config.js/
+  └── ._RepoMind/
+  └── RepoMind/
+    └── ._.git/
+    └── ._.gitignore/
+    └── ._LICENSE/
+    └── ._README.md/
+    └── ._index.html/
+    └── ._node_modules/
+    └── ._package-lock.json/
+    └── ._package.json/
+    └── ._public/
+    └── ._src/
+    └── ._vite.config.js/
+    └── public/
+    └── src/
 ```
 
 ---
 
 ## Roadmap
 
-- [ ] Add support for additional documentation formats like CHANGELOG.md
-- [ ] Implement user authentication to save and manage generated READMEs
-- [ ] Expand AI model options beyond the current src/lib/aiClient.js configuration
-- [ ] Integrate real-time collaboration features for team projects
-- [ ] Add export options for direct publishing to GitHub repositories
+- [ ] Add support for TypeScript project analysis
+- [ ] Implement CLI tool for headless README generation
+- [ ] Integrate with GitHub Actions for automated updates
+- [ ] Add template customization options
 
 ---
 
 ## Contributing
 
-We welcome pull requests for bug fixes, feature additions, and improvements. For major changes, please open an issue first to discuss your ideas. Follow the existing code structure in src/components/, src/lib/, and src/data/.
+Contributions are welcome! Please open an issue first to discuss major changes before submitting a pull request. Ensure your changes align with the project's React and Vite tech stack.
 
 ---
 
