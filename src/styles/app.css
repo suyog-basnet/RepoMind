@@ -26,6 +26,29 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 .app-shell { display: flex; flex-direction: column; height: 100vh; background: var(--bg-base); }
 .app-shell--home { overflow-y: auto; }
 
+/* src/styles/app.css */
+.analyze-btn {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background-color: #6c5ce7;
+  color: #fff;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  background-color: #5b4bd6;
+}
+
+.analyze-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: #3a3f52;
+}
 /* ---------- Home screen ---------- */
 
 .home {

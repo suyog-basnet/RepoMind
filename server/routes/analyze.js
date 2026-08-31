@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const repoUrl = req.body?.repoUrl;
+  console.log("Analyzing repo:", repoUrl);
   if (!repoUrl) return res.status(400).json({ error: "repoUrl is required" });
 
   let dir;

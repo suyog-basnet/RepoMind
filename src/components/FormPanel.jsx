@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { BADGE_CATEGORIES, LICENSES, ALL_BADGES } from '../data/badgeOptions';
 import { THEMES } from '../data/themes';
 import { TEMPLATES } from '../data/templates';
 import AiPanel from './AiPanel';
 import QualityScore from './QualityScore';
+import { analyzeRepo } from '../lib/analyzeClient';
 
 function Field({ label, hint, children }) {
   return (
@@ -27,6 +29,10 @@ function Section({ number, title, children, defaultOpen = true }) {
 }
 
 export default function FormPanel({ state, update }) {
+  const [analysis, setAnalysis] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [analyzeError, setAnalyzeError] = useState(null);
+
   const toggleBadge = (badge) => {
     const exists = state.badges.some((b) => b.id === badge.id);
     update({
@@ -48,6 +54,25 @@ export default function FormPanel({ state, update }) {
 
   const updateArch = (patch) => {
     update({ architecture: { ...state.architecture, ...patch } });
+  };
+
+  const runAnalysis = async () => {
+    if (!state.githubUser || !state.repoName) {
+      setAnalyzeError('Enter a GitHub username and repo name first.');
+      return;
+    }
+    setAnalyzing(true);
+    setAnalyzeError(null);
+    setAnalysis(null);
+    try {
+      const repoUrl = `https://github.com/${state.githubUser}/${state.repoName}`;
+      const result = await analyzeRepo(repoUrl);
+      setAnalysis(result);
+    } catch (err) {
+      setAnalyzeError(err.message);
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   return (
@@ -122,6 +147,43 @@ export default function FormPanel({ state, update }) {
             </Field>
           </div>
           <span className="field__hint">Used to auto-generate live stat badges (stars, issues, last commit).</span>
+        </Section>
+
+        <Section number="04b" title="Repo Analysis" defaultOpen={false}>
+          <button
+            type="button"
+            className="analyze-btn"
+            onClick={runAnalysis}
+            disabled={analyzing}
+          >
+            {analyzing ? 'Analyzing…' : 'Analyze Repository'}
+          </button>
+
+          {analyzeError && (
+            <p className="field__hint" style={{ color: 'crimson' }}>
+              {analyzeError}
+            </p>
+          )}
+
+          {analysis && (
+            <div style={{ marginTop: '0.75rem' }}>
+              <p>
+                <strong>Type:</strong> {analysis.projectType}
+              </p>
+              <p>
+                <strong>Files analyzed:</strong> {analysis.fileCount}
+              </p>
+              <p>
+                <strong>Graph nodes:</strong> {analysis.graph?.length ?? 0}
+              </p>
+              <details>
+                <summary>Raw graph JSON</summary>
+                <pre style={{ maxHeight: 200, overflow: 'auto', fontSize: '0.75rem' }}>
+                  {JSON.stringify(analysis.graph, null, 2)}
+                </pre>
+              </details>
+            </div>
+          )}
         </Section>
 
         <Section number="05" title="Tech Stack Badges" defaultOpen={false}>
