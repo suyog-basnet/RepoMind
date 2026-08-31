@@ -1,7 +1,6 @@
-import { BADGE_CATEGORIES, LICENSES } from '../data/badgeOptions';
+import { BADGE_CATEGORIES, LICENSES, ALL_BADGES } from '../data/badgeOptions';
 import { THEMES } from '../data/themes';
 import { TEMPLATES } from '../data/templates';
-import { ALL_BADGES } from '../data/badgeOptions';
 import AiPanel from './AiPanel';
 import QualityScore from './QualityScore';
 
