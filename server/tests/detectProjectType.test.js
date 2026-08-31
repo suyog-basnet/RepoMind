@@ -21,4 +21,15 @@ describe("detectProjectType", () => {
     expect(detectProjectType(dir)).toBe("unknown");
     rmSync(dir, { recursive: true, force: true });
   });
+
+  it("detects project type from a common subdirectory when root has none", () => {
+    const dir = mkdtempSync(path.join(tmpdir(), "test-"));
+    fs.mkdirSync(path.join(dir, "frontend"));
+    fs.writeFileSync(
+      path.join(dir, "frontend", "package.json"),
+      JSON.stringify({ dependencies: { react: "^18.0.0" } })
+    );
+    expect(detectProjectType(dir)).toBe("react");
+    rmSync(dir, { recursive: true, force: true });
+  });
 });
