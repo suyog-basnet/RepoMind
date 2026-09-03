@@ -5,6 +5,7 @@ import { findDeadCode } from "../lib/deadCode.js";
 import { getFileStats } from "../lib/fileStats.js";
 import { getProjectComplexity } from "../lib/complexity.js";
 import { findDuplicateFunctions } from "../lib/duplicateCode.js";
+import { graphToMermaid } from "../lib/mermaidGraph.js";
 
 export function analyzeJsProject(rootDir) {
   const project = loadProject(rootDir);
@@ -13,6 +14,7 @@ export function analyzeJsProject(rootDir) {
   const fileStats = getFileStats(graph, rootDir);
   const complexity = getProjectComplexity(project, rootDir);
   const duplicates = findDuplicateFunctions(project, rootDir, path);
+  const architectureDiagram = graphToMermaid(graph);
 
   return {
     fileCount: project.getSourceFiles().length,
@@ -21,5 +23,6 @@ export function analyzeJsProject(rootDir) {
     fileStats,
     complexity,
     duplicates,
+    architectureDiagram,
   };
 }
