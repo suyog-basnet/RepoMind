@@ -6,6 +6,7 @@ import AiPanel from './AiPanel';
 import QualityScore from './QualityScore';
 import { analyzeRepo } from '../lib/analyzeClient';
 import { scoreCodeQuality } from '../lib/codeQualityScore';
+import MermaidBlock from './MermaidBlock';
 
 function Field({ label, hint, children }) {
   return (
@@ -191,6 +192,21 @@ export default function FormPanel({ state, update }) {
                     <li>Duplicates: {codeScore.breakdown.duplicates}/100</li>
                     <li>Large files: {codeScore.breakdown.largeFiles}/100</li>
                   </ul>
+                </div>
+              )}
+
+              {analysis.architectureDiagram && (
+                <div style={{ marginTop: '1rem' }}>
+                  <p style={{ marginBottom: '0.5rem' }}>
+                    <strong>Architecture Diagram</strong>
+                    {analysis.architectureDiagram.truncated && (
+                      <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
+                        (showing {analysis.architectureDiagram.renderedCount} of{' '}
+                        {analysis.architectureDiagram.totalCount} files)
+                      </span>
+                    )}
+                  </p>
+                  <MermaidBlock code={analysis.architectureDiagram.diagram} />
                 </div>
               )}
 
