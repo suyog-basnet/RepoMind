@@ -329,3 +329,17 @@ textarea.mono { font-family: var(--font-mono); font-size: 12.5px; }
 @media (prefers-reduced-motion: reduce) {
   .unsaved-dot, .btn, .home-card { transition: none; }
 }
+
+.mermaid-container {
+  max-width: 100%;
+  max-height: 400px;
+  overflow: auto;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.mermaid-container svg {
+  min-width: 600px; /* let it be wide, scroll horizontally, don't squash */
+}

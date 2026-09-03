@@ -14,7 +14,7 @@ export function analyzeJsProject(rootDir) {
   const fileStats = getFileStats(graph, rootDir);
   const complexity = getProjectComplexity(project, rootDir);
   const duplicates = findDuplicateFunctions(project, rootDir, path);
-  const architectureDiagram = graphToMermaid(graph);
+  const architectureDiagram = graphToMermaid(graph, {maxNodes: 25 });
 
   return {
     fileCount: project.getSourceFiles().length,
