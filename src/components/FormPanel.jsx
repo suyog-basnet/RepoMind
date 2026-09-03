@@ -5,6 +5,7 @@ import { TEMPLATES } from '../data/templates';
 import AiPanel from './AiPanel';
 import QualityScore from './QualityScore';
 import { analyzeRepo } from '../lib/analyzeClient';
+import { scoreCodeQuality } from '../lib/codeQualityScore';
 
 function Field({ label, hint, children }) {
   return (
@@ -74,6 +75,8 @@ export default function FormPanel({ state, update }) {
       setAnalyzing(false);
     }
   };
+
+  const codeScore = analysis ? scoreCodeQuality(analysis) : null;
 
   return (
     <aside className="form-panel">
@@ -176,6 +179,21 @@ export default function FormPanel({ state, update }) {
               <p>
                 <strong>Graph nodes:</strong> {analysis.graph?.length ?? 0}
               </p>
+
+              {codeScore && (
+                <div style={{ marginTop: '0.75rem' }}>
+                  <p>
+                    <strong>Code Quality Score:</strong> {codeScore.overall}/100
+                  </p>
+                  <ul style={{ fontSize: '0.85rem', paddingLeft: '1rem' }}>
+                    <li>Complexity: {codeScore.breakdown.complexity}/100</li>
+                    <li>Dead code: {codeScore.breakdown.deadCode}/100</li>
+                    <li>Duplicates: {codeScore.breakdown.duplicates}/100</li>
+                    <li>Large files: {codeScore.breakdown.largeFiles}/100</li>
+                  </ul>
+                </div>
+              )}
+
               <details>
                 <summary>Raw graph JSON</summary>
                 <pre style={{ maxHeight: 200, overflow: 'auto', fontSize: '0.75rem' }}>
