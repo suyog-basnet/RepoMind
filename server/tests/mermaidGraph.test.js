@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { graphToMermaid } from "../lib/mermaidGraph.js";
+import { graphToMermaid, graphToFolderMermaid } from "../lib/mermaidGraph.js";
 
 describe("graphToMermaid", () => {
   it("produces valid mermaid syntax for a small graph", () => {
@@ -38,4 +38,38 @@ describe("graphToMermaid", () => {
 
     expect(result.diagram).not.toContain("-->");
   });
+
+  it("does not truncate when maxNodes exceeds graph size", () => {
+    const graph = [
+      { id: "a.js", imports: [], importedBy: [] },
+      { id: "b.js", imports: [], importedBy: [] },
+    ];
+    const result = graphToMermaid(graph, { maxNodes: 1000 });
+    expect(result.truncated).toBe(false);
+  });
+});
+
+describe("graphToFolderMermaid", () => {
+  it("groups files by top-level folder and counts cross-folder imports", () => {
+    const graph = [
+      { id: "frontend/a.js", imports: ["backend/x.js"], importedBy: [] },
+      { id: "frontend/b.js", imports: ["backend/y.js"], importedBy: [] },
+      { id: "backend/x.js", imports: [], importedBy: ["frontend/a.js"] },
+      { id: "backend/y.js", imports: [], importedBy: ["frontend/b.js"] },
+    ];
+    const result = graphToFolderMermaid(graph);
+
+    expect(result.folderCount).toBe(2);
+    expect(result.diagram).toContain("|2|");
+  });
+});
+
+it("includes click directives for each folder node", () => {
+  const graph = [
+    { id: "frontend/a.js", imports: ["backend/x.js"], importedBy: [] },
+    { id: "backend/x.js", imports: [], importedBy: ["frontend/a.js"] },
+  ];
+  const result = graphToFolderMermaid(graph);
+  expect(result.diagram).toContain('call repomindNodeClick("frontend")');
+  expect(result.diagram).toContain('call repomindNodeClick("backend")');
 });
