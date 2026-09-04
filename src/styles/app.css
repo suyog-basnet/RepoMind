@@ -343,3 +343,140 @@ textarea.mono { font-family: var(--font-mono); font-size: 12.5px; }
 .mermaid-container svg {
   min-width: 600px; /* let it be wide, scroll horizontally, don't squash */
 }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal__title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.modal__close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.modal__close:hover {
+  color: var(--text-primary);
+}
+
+.modal__body {
+  padding: 18px;
+  overflow: auto;
+}
+
+.modal__body .mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.modal__body .mermaid-container {
+  display: flex;
+  justify-content: center;
+}
+
+.folder-stats {
+  margin-top: 1rem;
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.folder-stats__title {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin: 0 0 8px;
+}
+
+.folder-stats ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.endpoint-list {
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+}
+
+.endpoint-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.endpoint-row:last-child { border-bottom: none; }
+
+.endpoint-method {
+  flex-shrink: 0;
+  width: 56px;
+  text-align: center;
+  padding: 2px 0;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 10.5px;
+}
+.endpoint-method--get { background: rgba(137, 180, 250, 0.15); color: var(--accent-blue); }
+.endpoint-method--post { background: rgba(166, 227, 161, 0.15); color: var(--accent-green); }
+.endpoint-method--patch { background: rgba(249, 226, 175, 0.15); color: var(--accent-yellow); }
+.endpoint-method--put { background: rgba(249, 226, 175, 0.15); color: var(--accent-yellow); }
+.endpoint-method--delete { background: rgba(243, 139, 168, 0.15); color: var(--accent-red); }
+
+.endpoint-path {
+  color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.endpoint-handler {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}

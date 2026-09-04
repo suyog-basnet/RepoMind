@@ -7,6 +7,8 @@ import QualityScore from './QualityScore';
 import { analyzeRepo } from '../lib/analyzeClient';
 import { scoreCodeQuality } from '../lib/codeQualityScore';
 import MermaidBlock from './MermaidBlock';
+import Modal from './Modal';
+import { getFolderStats } from '../lib/folderScope';
 
 function Field({ label, hint, children }) {
   return (
@@ -34,6 +36,9 @@ export default function FormPanel({ state, update }) {
   const [analysis, setAnalysis] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeError, setAnalyzeError] = useState(null);
+  const [diagramModalOpen, setDiagramModalOpen] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  const folderStats = selectedFolder && analysis ? getFolderStats(analysis, selectedFolder) : null;
 
   const toggleBadge = (badge) => {
     const exists = state.badges.some((b) => b.id === badge.id);
@@ -195,20 +200,81 @@ export default function FormPanel({ state, update }) {
                 </div>
               )}
 
-              {analysis.architectureDiagram && (
+              {analysis.apiEndpoints && analysis.apiEndpoints.length > 0 && (
+                <div style={{ marginTop: '1rem' }}>
+                  <p style={{ marginBottom: '0.5rem' }}>
+                    <strong>API Endpoints</strong>
+                    <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
+                      ({analysis.apiEndpoints.length} routes found)
+                    </span>
+                  </p>
+                  <div className="endpoint-list">
+                    {analysis.apiEndpoints.map((ep, i) => (
+                      <div key={i} className="endpoint-row">
+                        <span className={`endpoint-method endpoint-method--${ep.method.toLowerCase()}`}>
+                          {ep.method}
+                        </span>
+                        <span className="endpoint-path">{ep.path}</span>
+                        <span className="endpoint-handler">{ep.handler}()</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {analysis.architecture && (
                 <div style={{ marginTop: '1rem' }}>
                   <p style={{ marginBottom: '0.5rem' }}>
                     <strong>Architecture Diagram</strong>
-                    {analysis.architectureDiagram.truncated && (
+                    {analysis.architecture.truncated && (
                       <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
-                        (showing {analysis.architectureDiagram.renderedCount} of{' '}
-                        {analysis.architectureDiagram.totalCount} files)
+                        (showing {analysis.architecture.renderedCount} of{' '}
+                        {analysis.architecture.totalCount} files)
                       </span>
                     )}
                   </p>
-                  <MermaidBlock code={analysis.architectureDiagram.diagram} />
+                  <MermaidBlock code={analysis.architecture.diagram} />
+                  {analysis.architecture.truncated && (
+                    <button
+                      type="button"
+                      className="btn btn--ghost"
+                      style={{ marginTop: '0.5rem' }}
+                      onClick={() => setDiagramModalOpen(true)}
+                    >
+                      View Full Diagram
+                    </button>
+                  )}
                 </div>
               )}
+
+            <Modal
+              open={diagramModalOpen}
+              onClose={() => {
+                setDiagramModalOpen(false);
+                setSelectedFolder(null);
+              }}
+              title={`Folder-Level Architecture (${analysis?.architectureFull?.folderCount ?? 0} folders)`}
+            >
+              {analysis?.architectureFull && (
+                <MermaidBlock
+                  code={analysis.architectureFull.diagram}
+                  onNodeClick={(folder) => setSelectedFolder(folder)}
+                />
+              )}
+
+              {folderStats && (
+                <div className="folder-stats">
+                  <p className="folder-stats__title">{folderStats.folderName}/</p>
+                  <ul>
+                    <li>Files: {folderStats.fileCount}</li>
+                    <li>Dead code candidates: {folderStats.deadCodeCount}</li>
+                    <li>Large files: {folderStats.largeFileCount}</li>
+                    <li>Duplicate function groups: {folderStats.duplicateCount}</li>
+                    <li>Avg. complexity: {folderStats.avgComplexity}</li>
+                  </ul>
+                </div>
+              )}
+            </Modal>
 
               <details>
                 <summary>Raw graph JSON</summary>
