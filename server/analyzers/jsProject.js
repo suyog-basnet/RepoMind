@@ -9,6 +9,7 @@ import { graphToMermaid, graphToFolderMermaid } from "../lib/mermaidGraph.js";
 import { findNestJsEndpoints, findExpressEndpoints } from "../lib/apiEndpoints.js";
 import { extractEntities } from "../lib/schemaExtractor.js";
 import {schemaToMermaid} from "../lib/schemaToMermaid.js";
+import { extractPrismaEntities } from "../lib/prismaExtractor.js";
 
 export function analyzeJsProject(rootDir) {
   const project = loadProject(rootDir);
@@ -23,7 +24,9 @@ export function analyzeJsProject(rootDir) {
     ...findNestJsEndpoints(project, rootDir, path),
     ...findExpressEndpoints(project, rootDir, path),
   ];
-  const entities = extractEntities(project, rootDir, path);
+  const typeORMEntities = extractEntities(project, rootDir, path);
+  const prismaEntities = extractPrismaEntities(rootDir);
+  const entities = [...typeORMEntities, ...prismaEntities];
   const schema = schemaToMermaid(entities);
 
   return {
