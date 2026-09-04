@@ -247,34 +247,46 @@ export default function FormPanel({ state, update }) {
                 </div>
               )}
 
-            <Modal
-              open={diagramModalOpen}
-              onClose={() => {
-                setDiagramModalOpen(false);
-                setSelectedFolder(null);
-              }}
-              title={`Folder-Level Architecture (${analysis?.architectureFull?.folderCount ?? 0} folders)`}
-            >
-              {analysis?.architectureFull && (
-                <MermaidBlock
-                  code={analysis.architectureFull.diagram}
-                  onNodeClick={(folder) => setSelectedFolder(folder)}
-                />
-              )}
+              <Modal
+                open={diagramModalOpen}
+                onClose={() => {
+                  setDiagramModalOpen(false);
+                  setSelectedFolder(null);
+                }}
+                title={`Folder-Level Architecture (${analysis?.architectureFull?.folderCount ?? 0} folders)`}
+              >
+                {analysis?.architectureFull && (
+                  <MermaidBlock
+                    code={analysis.architectureFull.diagram}
+                    onNodeClick={(folder) => setSelectedFolder(folder)}
+                  />
+                )}
 
-              {folderStats && (
-                <div className="folder-stats">
-                  <p className="folder-stats__title">{folderStats.folderName}/</p>
-                  <ul>
-                    <li>Files: {folderStats.fileCount}</li>
-                    <li>Dead code candidates: {folderStats.deadCodeCount}</li>
-                    <li>Large files: {folderStats.largeFileCount}</li>
-                    <li>Duplicate function groups: {folderStats.duplicateCount}</li>
-                    <li>Avg. complexity: {folderStats.avgComplexity}</li>
-                  </ul>
+                {folderStats && (
+                  <div className="folder-stats">
+                    <p className="folder-stats__title">{folderStats.folderName}/</p>
+                    <ul>
+                      <li>Files: {folderStats.fileCount}</li>
+                      <li>Dead code candidates: {folderStats.deadCodeCount}</li>
+                      <li>Large files: {folderStats.largeFileCount}</li>
+                      <li>Duplicate function groups: {folderStats.duplicateCount}</li>
+                      <li>Avg. complexity: {folderStats.avgComplexity}</li>
+                    </ul>
+                  </div>
+                )}
+              </Modal>
+
+              {analysis.schema && analysis.schema.entityCount > 0 && (
+                <div style={{ marginTop: '1rem' }}>
+                  <p style={{ marginBottom: '0.5rem' }}>
+                    <strong>Database Schema</strong>
+                    <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
+                      ({analysis.schema.entityCount} entities)
+                    </span>
+                  </p>
+                  <MermaidBlock code={analysis.schema.diagram} />
                 </div>
               )}
-            </Modal>
 
               <details>
                 <summary>Raw graph JSON</summary>
