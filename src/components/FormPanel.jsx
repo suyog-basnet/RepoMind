@@ -1,14 +1,8 @@
-import { useState } from 'react';
 import { BADGE_CATEGORIES, LICENSES, ALL_BADGES } from '../data/badgeOptions';
 import { THEMES } from '../data/themes';
 import { TEMPLATES } from '../data/templates';
 import AiPanel from './AiPanel';
 import QualityScore from './QualityScore';
-import { analyzeRepo } from '../lib/analyzeClient';
-import { scoreCodeQuality } from '../lib/codeQualityScore';
-import MermaidBlock from './MermaidBlock';
-import Modal from './Modal';
-import { getFolderStats } from '../lib/folderScope';
 
 function Field({ label, hint, children }) {
   return (
@@ -32,14 +26,7 @@ function Section({ number, title, children, defaultOpen = true }) {
   );
 }
 
-export default function FormPanel({ state, update }) {
-  const [analysis, setAnalysis] = useState(null);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [analyzeError, setAnalyzeError] = useState(null);
-  const [diagramModalOpen, setDiagramModalOpen] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState(null);
-  const folderStats = selectedFolder && analysis ? getFolderStats(analysis, selectedFolder) : null;
-
+export default function FormPanel({ state, update, onAnalyze }) {
   const toggleBadge = (badge) => {
     const exists = state.badges.some((b) => b.id === badge.id);
     update({
@@ -62,27 +49,6 @@ export default function FormPanel({ state, update }) {
   const updateArch = (patch) => {
     update({ architecture: { ...state.architecture, ...patch } });
   };
-
-  const runAnalysis = async () => {
-    if (!state.githubUser || !state.repoName) {
-      setAnalyzeError('Enter a GitHub username and repo name first.');
-      return;
-    }
-    setAnalyzing(true);
-    setAnalyzeError(null);
-    setAnalysis(null);
-    try {
-      const repoUrl = `https://github.com/${state.githubUser}/${state.repoName}`;
-      const result = await analyzeRepo(repoUrl);
-      setAnalysis(result);
-    } catch (err) {
-      setAnalyzeError(err.message);
-    } finally {
-      setAnalyzing(false);
-    }
-  };
-
-  const codeScore = analysis ? scoreCodeQuality(analysis) : null;
 
   return (
     <aside className="form-panel">
@@ -159,143 +125,12 @@ export default function FormPanel({ state, update }) {
         </Section>
 
         <Section number="04b" title="Repo Analysis" defaultOpen={false}>
-          <button
-            type="button"
-            className="analyze-btn"
-            onClick={runAnalysis}
-            disabled={analyzing}
-          >
-            {analyzing ? 'Analyzing…' : 'Analyze Repository'}
+          <p className="field__hint" style={{ marginBottom: '0.5rem' }}>
+            Run a full code analysis — architecture, API endpoints, database schema, security findings.
+          </p>
+          <button type="button" className="analyze-btn" onClick={onAnalyze}>
+            Analyze Repository →
           </button>
-
-          {analyzeError && (
-            <p className="field__hint" style={{ color: 'crimson' }}>
-              {analyzeError}
-            </p>
-          )}
-
-          {analysis && (
-            <div style={{ marginTop: '0.75rem' }}>
-              <p>
-                <strong>Type:</strong> {analysis.projectType}
-              </p>
-              <p>
-                <strong>Files analyzed:</strong> {analysis.fileCount}
-              </p>
-              <p>
-                <strong>Graph nodes:</strong> {analysis.graph?.length ?? 0}
-              </p>
-
-              {codeScore && (
-                <div style={{ marginTop: '0.75rem' }}>
-                  <p>
-                    <strong>Code Quality Score:</strong> {codeScore.overall}/100
-                  </p>
-                  <ul style={{ fontSize: '0.85rem', paddingLeft: '1rem' }}>
-                    <li>Complexity: {codeScore.breakdown.complexity}/100</li>
-                    <li>Dead code: {codeScore.breakdown.deadCode}/100</li>
-                    <li>Duplicates: {codeScore.breakdown.duplicates}/100</li>
-                    <li>Large files: {codeScore.breakdown.largeFiles}/100</li>
-                  </ul>
-                </div>
-              )}
-
-              {analysis.apiEndpoints && analysis.apiEndpoints.length > 0 && (
-                <div style={{ marginTop: '1rem' }}>
-                  <p style={{ marginBottom: '0.5rem' }}>
-                    <strong>API Endpoints</strong>
-                    <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
-                      ({analysis.apiEndpoints.length} routes found)
-                    </span>
-                  </p>
-                  <div className="endpoint-list">
-                    {analysis.apiEndpoints.map((ep, i) => (
-                      <div key={i} className="endpoint-row">
-                        <span className={`endpoint-method endpoint-method--${ep.method.toLowerCase()}`}>
-                          {ep.method}
-                        </span>
-                        <span className="endpoint-path">{ep.path}</span>
-                        <span className="endpoint-handler">{ep.handler}()</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {analysis.architecture && (
-                <div style={{ marginTop: '1rem' }}>
-                  <p style={{ marginBottom: '0.5rem' }}>
-                    <strong>Architecture Diagram</strong>
-                    {analysis.architecture.truncated && (
-                      <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
-                        (showing {analysis.architecture.renderedCount} of{' '}
-                        {analysis.architecture.totalCount} files)
-                      </span>
-                    )}
-                  </p>
-                  <MermaidBlock code={analysis.architecture.diagram} />
-                  {analysis.architecture.truncated && (
-                    <button
-                      type="button"
-                      className="btn btn--ghost"
-                      style={{ marginTop: '0.5rem' }}
-                      onClick={() => setDiagramModalOpen(true)}
-                    >
-                      View Full Diagram
-                    </button>
-                  )}
-                </div>
-              )}
-
-              <Modal
-                open={diagramModalOpen}
-                onClose={() => {
-                  setDiagramModalOpen(false);
-                  setSelectedFolder(null);
-                }}
-                title={`Folder-Level Architecture (${analysis?.architectureFull?.folderCount ?? 0} folders)`}
-              >
-                {analysis?.architectureFull && (
-                  <MermaidBlock
-                    code={analysis.architectureFull.diagram}
-                    onNodeClick={(folder) => setSelectedFolder(folder)}
-                  />
-                )}
-
-                {folderStats && (
-                  <div className="folder-stats">
-                    <p className="folder-stats__title">{folderStats.folderName}/</p>
-                    <ul>
-                      <li>Files: {folderStats.fileCount}</li>
-                      <li>Dead code candidates: {folderStats.deadCodeCount}</li>
-                      <li>Large files: {folderStats.largeFileCount}</li>
-                      <li>Duplicate function groups: {folderStats.duplicateCount}</li>
-                      <li>Avg. complexity: {folderStats.avgComplexity}</li>
-                    </ul>
-                  </div>
-                )}
-              </Modal>
-
-              {analysis.schema && analysis.schema.entityCount > 0 && (
-                <div style={{ marginTop: '1rem' }}>
-                  <p style={{ marginBottom: '0.5rem' }}>
-                    <strong>Database Schema</strong>
-                    <span className="field__hint" style={{ marginLeft: '0.5rem' }}>
-                      ({analysis.schema.entityCount} entities)
-                    </span>
-                  </p>
-                  <MermaidBlock code={analysis.schema.diagram} />
-                </div>
-              )}
-
-              <details>
-                <summary>Raw graph JSON</summary>
-                <pre style={{ maxHeight: 200, overflow: 'auto', fontSize: '0.75rem' }}>
-                  {JSON.stringify(analysis.graph, null, 2)}
-                </pre>
-              </details>
-            </div>
-          )}
         </Section>
 
         <Section number="05" title="Tech Stack Badges" defaultOpen={false}>

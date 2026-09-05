@@ -3,7 +3,15 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export default function TopBar({ markdown, projectName, onAction, savedPulse, onStartOver }) {
+export default function TopBar({
+  markdown,
+  projectName,
+  onAction,
+  savedPulse,
+  onStartOver,
+  activeTab,
+  onTabChange,
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -57,30 +65,48 @@ a{color:#0969da}
           <span className="dot dot--yellow" />
           <span className="dot dot--green" />
         </div>
-        <div className="tab">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" className="tab__icon">
-            <path d="M2 2.5A1.5 1.5 0 0 1 3.5 1h5.086a1.5 1.5 0 0 1 1.06.44l2.914 2.914A1.5 1.5 0 0 1 13 5.414V13.5A1.5 1.5 0 0 1 11.5 15h-8A1.5 1.5 0 0 1 2 13.5v-11Z" />
-          </svg>
-          <span>README.md</span>
-          <span className={`unsaved-dot ${savedPulse ? 'unsaved-dot--pulse' : ''}`} />
+        <div className="tab-switcher">
+          <button
+            type="button"
+            className={`tab-switcher__btn ${activeTab === 'readme' ? 'tab-switcher__btn--active' : ''}`}
+            onClick={() => onTabChange('readme')}
+          >
+            README Builder
+          </button>
+          <button
+            type="button"
+            className={`tab-switcher__btn ${activeTab === 'analysis' ? 'tab-switcher__btn--active' : ''}`}
+            onClick={() => onTabChange('analysis')}
+          >
+            Repo Analysis
+          </button>
         </div>
       </div>
       <div className="topbar__right">
-        <span className="topbar__label">{projectName || 'untitled-project'}</span>
-        <button className="btn btn--ghost" onClick={onStartOver}>
-          Start Over
-        </button>
-        <button className="btn btn--ghost" onClick={handleCopy}>
-          {copied ? '✓ Copied' : 'Copy'}
-        </button>
-        <div className="export-group">
-          <button className="btn btn--primary" onClick={handleDownloadMd}>
-            Download .md
+        {activeTab === 'readme' && (
+          <>
+            <span className="topbar__label">{projectName || 'untitled-project'}</span>
+            <button className="btn btn--ghost" onClick={onStartOver}>
+              Start Over
+            </button>
+            <button className="btn btn--ghost" onClick={handleCopy}>
+              {copied ? '✓ Copied' : 'Copy'}
+            </button>
+            <div className="export-group">
+              <button className="btn btn--primary" onClick={handleDownloadMd}>
+                Download .md
+              </button>
+              <button className="btn btn--primary-ghost" onClick={handleDownloadHtml} title="Export as standalone HTML">
+                .html
+              </button>
+            </div>
+          </>
+        )}
+        {activeTab === 'analysis' && (
+          <button className="btn btn--ghost" onClick={onStartOver}>
+            Start Over
           </button>
-          <button className="btn btn--primary-ghost" onClick={handleDownloadHtml} title="Export as standalone HTML">
-            .html
-          </button>
-        </div>
+        )}
       </div>
     </header>
   );

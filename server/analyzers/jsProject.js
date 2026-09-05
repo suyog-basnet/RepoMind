@@ -11,7 +11,7 @@ import { extractEntities } from "../lib/schemaExtractor.js";
 import {schemaToMermaid} from "../lib/schemaToMermaid.js";
 import { extractPrismaEntities } from "../lib/prismaExtractor.js";
 import { scanProjectForSecrets } from "../lib/secretScanner.js";
-
+import { auditDependencies } from "../lib/dependencyAudit.js";
 
 export function analyzeJsProject(rootDir) {
   const project = loadProject(rootDir);
@@ -31,6 +31,7 @@ export function analyzeJsProject(rootDir) {
   const entities = [...typeORMEntities, ...prismaEntities];
   const schema = schemaToMermaid(entities);
   const secretFindings = scanProjectForSecrets(project, rootDir, path);
+  const dependencyAudit = auditDependencies(rootDir);
 
   return {
     fileCount: project.getSourceFiles().length,
@@ -45,5 +46,6 @@ export function analyzeJsProject(rootDir) {
     entities,
     schema,
     secretFindings,
+    dependencyAudit,
   };
 }
