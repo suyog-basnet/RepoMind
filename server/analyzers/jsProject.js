@@ -10,6 +10,8 @@ import { findNestJsEndpoints, findExpressEndpoints } from "../lib/apiEndpoints.j
 import { extractEntities } from "../lib/schemaExtractor.js";
 import {schemaToMermaid} from "../lib/schemaToMermaid.js";
 import { extractPrismaEntities } from "../lib/prismaExtractor.js";
+import { scanProjectForSecrets } from "../lib/secretScanner.js";
+
 
 export function analyzeJsProject(rootDir) {
   const project = loadProject(rootDir);
@@ -28,6 +30,7 @@ export function analyzeJsProject(rootDir) {
   const prismaEntities = extractPrismaEntities(rootDir);
   const entities = [...typeORMEntities, ...prismaEntities];
   const schema = schemaToMermaid(entities);
+  const secretFindings = scanProjectForSecrets(project, rootDir, path);
 
   return {
     fileCount: project.getSourceFiles().length,
@@ -41,5 +44,6 @@ export function analyzeJsProject(rootDir) {
     apiEndpoints,
     entities,
     schema,
+    secretFindings,
   };
 }
