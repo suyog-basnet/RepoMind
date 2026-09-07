@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 import { RepoChunk } from "./entities/RepoChunk.js";
+import { AnalysisCache } from "./entities/AnalysisCache.js";
 
 dotenv.config();
 
@@ -10,5 +11,5 @@ export const AppDataSource = new DataSource({
   url: process.env.DATABASE_URL,
   synchronize: true,
   logging: false,
-  entities: [RepoChunk],
+  entities: [RepoChunk, AnalysisCache],
 });
