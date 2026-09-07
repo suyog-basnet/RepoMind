@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import analyzeRoutes from "./routes/analyze.js";
 import indexRoutes from "./routes/index.js";
 import { AppDataSource } from "./data-source.js";
+import askRoutes from "./routes/ask.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/analyze", analyzeRoutes);
 app.use("/api/index", indexRoutes);
+app.use("/api/ask", askRoutes);
 
 const PORT = process.env.PORT || 4000;
 
