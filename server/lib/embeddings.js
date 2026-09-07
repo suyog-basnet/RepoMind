@@ -19,7 +19,9 @@ export async function getEmbedding(text) {
 
   if (!res.ok) {
     const errText = await res.text();
-    throw new Error(`OpenRouter embeddings request failed: ${res.status} ${errText}`);
+    const err = new Error(`OpenRouter embeddings request failed: ${res.status} ${errText}`);
+    err.isTokenLimitError = errText.includes("context length");
+    throw err;
   }
 
   const data = await res.json();
