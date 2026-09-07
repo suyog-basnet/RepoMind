@@ -652,3 +652,42 @@ textarea.mono { font-family: var(--font-mono); font-size: 12.5px; }
   font-size: 12px;
   color: var(--text-muted);
 }
+
+.ask-input-row {
+  display: flex;
+  gap: 10px;
+  max-width: 700px;
+}
+
+.ask-input-row input {
+  flex: 1;
+}
+
+.ask-result {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 700px;
+}
+
+.ask-result__answer {
+  white-space: pre-wrap;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.ask-result__sources ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.ask-result__sources code {
+  font-family: var(--font-mono);
+  color: var(--accent-blue);
+}
