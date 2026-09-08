@@ -1,11 +1,11 @@
 const ENTRY_POINT_PATTERNS = [
-  /^src\/main\.(jsx?|tsx?)$/,
-  /^src\/index\.(jsx?|tsx?)$/,
-  /^index\.(jsx?|tsx?)$/,
+  /(^|\/)main\.(jsx?|tsx?)$/,
+  /(^|\/)index\.(jsx?|tsx?)$/,
+  /(^|\/)server\.(js|ts)$/,
+  /(^|\/)app\.(js|ts)$/,
   /\.config\.(js|ts)$/,
   /^vite\.config\./,
-  /^index\.js$/,           
-  /^server\/index\.js$/,  
+  /\.d\.ts$/,
 ];
 
 const EXCLUDED_PATTERNS = [
