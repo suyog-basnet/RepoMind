@@ -151,7 +151,7 @@ const handleAsk = async () => {
     )}
     </section>
 
-          {codeScore && (
+          {codeScore && analysis.fileCount > 0 && (
             <section className="analysis-section">
               <h3>Code Quality Score: {codeScore.overall}/100</h3>
               <ul className="analysis-breakdown-list">
