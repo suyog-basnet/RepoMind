@@ -10,43 +10,45 @@ export default function RepoAnalysisView({ state, update, analysis, analyzing, a
   const [selectedFolder, setSelectedFolder] = useState(null);
   const codeScore = analysis ? scoreCodeQuality(analysis) : null;
   const folderStats = selectedFolder && analysis ? getFolderStats(analysis, selectedFolder) : null;
+
   const [indexing, setIndexing] = useState(false);
   const [indexed, setIndexed] = useState(false);
-  
   const [indexError, setIndexError] = useState(null);
+
   const [question, setQuestion] = useState('');
   const [asking, setAsking] = useState(false);
   const [askResult, setAskResult] = useState(null);
   const [askError, setAskError] = useState(null);
+
   const repoUrl = `https://github.com/${state.githubUser}/${state.repoName}`;
 
   const handleIndex = async () => {
-  setIndexing(true);
-  setIndexError(null);
-  try {
-    await indexRepo(repoUrl);
-    setIndexed(true);
-  } catch (err) {
-    setIndexError(err.message);
-  } finally {
-    setIndexing(false);
-  }
-};
+    setIndexing(true);
+    setIndexError(null);
+    try {
+      await indexRepo(repoUrl);
+      setIndexed(true);
+    } catch (err) {
+      setIndexError(err.message);
+    } finally {
+      setIndexing(false);
+    }
+  };
 
-const handleAsk = async () => {
-  if (!question.trim()) return;
-  setAsking(true);
-  setAskError(null);
-  setAskResult(null);
-  try {
-    const result = await askRepo(repoUrl, question);
-    setAskResult(result);
-  } catch (err) {
-    setAskError(err.message);
-  } finally {
-    setAsking(false);
-  }
-};
+  const handleAsk = async () => {
+    if (!question.trim()) return;
+    setAsking(true);
+    setAskError(null);
+    setAskResult(null);
+    try {
+      const result = await askRepo(repoUrl, question);
+      setAskResult(result);
+    } catch (err) {
+      setAskError(err.message);
+    } finally {
+      setAsking(false);
+    }
+  };
 
   return (
     <main className="analysis-view">
@@ -93,63 +95,65 @@ const handleAsk = async () => {
             </div>
           </div>
 
-        <section className="analysis-section">
-    <h3>Ask This Repository</h3>
+          {analysis.fileCount > 0 && (
+            <section className="analysis-section">
+              <h3>Ask This Repository</h3>
 
-    {!indexed && (
-        <div>
-        <p className="field__hint" style={{ marginBottom: '0.5rem' }}>
-            Index this repo first to enable Q&A (embeds all code chunks — takes ~30-60s).
-        </p>
-        <button type="button" className="btn btn--ghost" onClick={handleIndex} disabled={indexing}>
-            {indexing ? 'Indexing…' : 'Index Repository'}
-        </button>
-        {indexError && (
-            <p className="field__hint" style={{ color: 'crimson', marginTop: '0.5rem' }}>
-            {indexError}
-            </p>
-        )}
-        </div>
-    )}
+              {!indexed && (
+                <div>
+                  <p className="field__hint" style={{ marginBottom: '0.5rem' }}>
+                    Index this repo first to enable Q&A (embeds all code chunks — takes ~30-60s).
+                  </p>
+                  <button type="button" className="btn btn--ghost" onClick={handleIndex} disabled={indexing}>
+                    {indexing ? 'Indexing…' : 'Index Repository'}
+                  </button>
+                  {indexError && (
+                    <p className="field__hint" style={{ color: 'crimson', marginTop: '0.5rem' }}>
+                      {indexError}
+                    </p>
+                  )}
+                </div>
+              )}
 
-    {indexed && (
-        <div>
-        <div className="ask-input-row">
-            <input
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="e.g. Where is authentication handled?"
-            onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
-            />
-            <button type="button" className="analyze-btn" onClick={handleAsk} disabled={asking}>
-            {asking ? 'Thinking…' : 'Ask'}
-            </button>
-        </div>
+              {indexed && (
+                <div>
+                  <div className="ask-input-row">
+                    <input
+                      value={question}
+                      onChange={(e) => setQuestion(e.target.value)}
+                      placeholder="e.g. Where is authentication handled?"
+                      onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
+                    />
+                    <button type="button" className="analyze-btn" onClick={handleAsk} disabled={asking}>
+                      {asking ? 'Thinking…' : 'Ask'}
+                    </button>
+                  </div>
 
-        {askError && (
-            <p className="field__hint" style={{ color: 'crimson', marginTop: '0.5rem' }}>
-            {askError}
-            </p>
-        )}
+                  {askError && (
+                    <p className="field__hint" style={{ color: 'crimson', marginTop: '0.5rem' }}>
+                      {askError}
+                    </p>
+                  )}
 
-        {askResult && (
-            <div className="ask-result">
-            <div className="ask-result__answer">{askResult.answer}</div>
-            <div className="ask-result__sources">
-                <span className="field__hint">Sources:</span>
-                <ul>
-                {askResult.sources.map((s, i) => (
-                    <li key={i}>
-                    <code>{s.filePath}</code> ({s.chunkName}, lines {s.startLine}-{s.endLine})
-                    </li>
-                ))}
-                </ul>
-            </div>
-            </div>
-        )}
-        </div>
-    )}
-    </section>
+                  {askResult && (
+                    <div className="ask-result">
+                      <div className="ask-result__answer">{askResult.answer}</div>
+                      <div className="ask-result__sources">
+                        <span className="field__hint">Sources:</span>
+                        <ul>
+                          {askResult.sources.map((s, i) => (
+                            <li key={i}>
+                              <code>{s.filePath}</code> ({s.chunkName}, lines {s.startLine}-{s.endLine})
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+          )}
 
           {codeScore && analysis.fileCount > 0 && (
             <section className="analysis-section">
